@@ -1,5 +1,7 @@
 function Xnew = fLX_ansatz(X,F,PSI,nosc,N)
-% fLX_ansatz integrates the slow state using both x and z variables
+% fLX_ansatz integrates the slow state using the previous x variable (N
+% different samples)
+% 
 %   
 % Inputs
 %   X   : set of N previous slow state vectors
