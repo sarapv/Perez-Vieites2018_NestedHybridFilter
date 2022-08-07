@@ -4,7 +4,7 @@ In this repository is included MATLAB code of the NHFs introduced in [[2]](#refe
 
 * /NHFs : 4 implementations of NHFs using sequential Monte Carlo (SMC) or sequential quasi-Monte Carlo (SQMC) in the first layer, and extended Kalman filters (EKFs) or ensemble Kalman filters (EnKFs) in the second layer (i.e., SMC-EKF, SMC-EnKF, SQMC-EKF and SQMC-EnKF).
 * /NPF : implementation of nested particle filter (NPF) [[1]](#references).
-* /2StageF : implementation of two-stage filter [[3]](#references).
+* /two-stage filter : implementation of two-stage filter [[3]](#references).
 
 
 # References
