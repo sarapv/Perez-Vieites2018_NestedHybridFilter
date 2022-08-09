@@ -1,4 +1,4 @@
-function [Param_est, xest, Param_particles, MSEx, MSE_ansatz, x_ref] = SMCEKF_L96(s2x,s2z,s2y,h,NT,Tobs,K,par_range,s2M,N,F,C,B,H,fps,nosc)
+function [Param_est, xest, Param_particles, MSEx, MSE_ansatz, xref] = SMCEKF_L96(s2x,s2z,s2y,h,NT,Tobs,K,par_range,s2M,N,F,C,B,H,fps,nosc)
 % function[Param_est, xest, Param_particles, MSEx, MSE_ansatz, x_ref] = SMCEKF_L96(s2x,s2z,s2y,h,NT,Tobs,K,par_range,s2M,N,F,C,B,H,fps,nosc)
 % Algorithm with SMC for parameter estimation and EKFs for state estimation
 %
@@ -13,7 +13,6 @@ function [Param_est, xest, Param_particles, MSEx, MSE_ansatz, x_ref] = SMCEKF_L9
 % par_range     : support of the unknown parameter F
 % s2M           : jittering variance
 % N             : no. of particles, first layer
-% nosc          : no. of slow variables 
 % F, C, H, B    : parameters
 % fps           : no. of fast variables per slow variable 
 % nosc          : no. of slow variables 
@@ -24,50 +23,45 @@ function [Param_est, xest, Param_particles, MSEx, MSE_ansatz, x_ref] = SMCEKF_L9
 % Param_particles    : samples of parameters at different moments
 % MSEx               : MSE of the slow state (x)
 % MSE_ansatz         : MSE of the ansatz (polynomial of degree 2)
-% x_ref              : true signals of x_{1,t} and x_{2,t}
+% xref              : true signals of x_{1,t} and x_{2,t}
 %
 
-nosc_fast = fps*nosc;
 
 %% Initializations
+nosc_fast = fps*nosc;
 
-p=haltonset(1,'Skip',1e3,'Leap',1e2);
-p = scramble(p,'RR2');
-x0=net(p,nosc);
+x0 = rand(nosc,1);
 x_old = x0;
-
-p=haltonset(1,'Skip',1e3,'Leap',1e2);
-p = scramble(p,'RR2');
-z0=net(p,nosc_fast);
-z_old = (1/(C*B))*z0 - 1/(2*C*B);
+z0 = (1/(C*B))*rand(nosc_fast,1) - 1/(2*C*B);
+z_old = z0;
 
 saveparticles = round(NT/20);
 
-%% Estimates
+% Estimates
 Fest = zeros(1,NT);
 Aest = zeros(2,NT);
 Param_particles = [];
 PSIparticles = zeros(nosc,N);
+xest = zeros(nosc,NT);
+MSEx = zeros(1,N);
+MSE_ansatz = zeros(1,NT);
 
 %% Covariance matrices and mean vectors
 cov0 = 10*eye(nosc);
 for n = 1:N
     cov_layer2{n} = cov0;
-end %m
+end %n
 Xparticles_layer1 = x0*ones(1,N);
 
 %% Prior sampling in the parameter space (uniform prior)
-xest = zeros(nosc,N);
-MSEx = zeros(1,N);
-MSE_ansatz = zeros(1,NT);
 Fparticles = par_range(1,1) + ( par_range(1,2) - par_range(1,1) ) .* rand(1,N);
 Aparticles = zeros(2,N);
 Aparticles(1,1:N) = par_range(2,1) + ( par_range(2,2) - par_range(2,1) ) .* rand(1,N);
 Aparticles(2,1:N) = par_range(3,1) + ( par_range(3,2) - par_range(3,1) ) .* rand(1,N);
 
 %% Generate ground truth and run algorithm
-x_ref=zeros([2 NT]); % save true values of x_{1,t} and x_{2,t}
-x_ref(:,1)=[x_old(1); x_old(2)];
+xref=zeros(2,NT); % save true values of x_{1,t} and x_{2,t}
+xref(:,1)=[x_old(1); x_old(2)];
 
 for t = 2:NT
     
@@ -88,7 +82,7 @@ for t = 2:NT
     x = x_old + (1/6)*(  h*( x1 + (2*x2) + (2*x3) + x4 ) + sqrt(s2x).*randn(size(x_old)) );
     PSItruth = (1/6)*(( PSI1 + (2*PSI2) + (2*PSI3) + PSI4 ));
     
-    x_ref(:,t)=[x(1); x(2)];
+    xref(:,t)=[x(1); x(2)];
     
     % Observations
     y = x' + sqrt(s2y)*randn(size(x'));   
@@ -165,7 +159,7 @@ for t = 2:NT
             CM_old_mc = cov_layer2;
             for n = 1:N
                 cov_layer2{n} = CM_old_mc{idx(n)};
-            end %m
+            end %n
 
         end
 
@@ -176,7 +170,7 @@ for t = 2:NT
             figure(3);
             for kk = 1:2
                 subplot(2,4,kk);
-                plot(h*(1:t),x_ref(kk,1:t),'k-');
+                plot(h*(1:t),xref(kk,1:t),'k-');
                 hold on;
                 plot(h*(1+Tobs:Tobs:t),xest(kk,1+Tobs:Tobs:t),'g--');
                 hold off;
@@ -236,7 +230,7 @@ for t = 2:NT
     x_old=x;
     z_old=z;
     
-end %n
+end %t
 
 %% Outputs
 Param_est = [Fest; Aest];

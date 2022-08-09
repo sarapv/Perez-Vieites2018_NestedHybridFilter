@@ -1,6 +1,6 @@
 function [ Output_SMCEKF ] = NHF_SMCEKF_Lorenz96( nosc, N, gap, t_final, iter )
 %
-%   [Output_SMCEKF] = NHF_SMCEKF_Lorenz96( nosc, M, gap, iteration )
+%   [Output_SMCEKF] = NHF_SMCEKF_Lorenz96( nosc, M, gap, t_final, iter )
 %
 % Inputs:
 %   nosc    : no. of oscillators or dimension of slow variables (x)
@@ -11,9 +11,14 @@ function [ Output_SMCEKF ] = NHF_SMCEKF_Lorenz96( nosc, N, gap, t_final, iter )
 %   iter    : no. to label the experiment
 %
 % Outputs:
-%   Output_SMCEKF   : structure that contains FAe (estimates of param. F A1
-%   A2), Xe_FA (estimates of x) and FAp (particles of param. F A1 A2)
-%
+%   Output_SMCEKF   : structure that contains 
+%                       - FAest (estimates of param. F A1 and A2), 
+%                       - Xest (estimates of x),
+%                       - FAparticles (particles of param. F A1 and A2),
+%                       - MSEx (MSE of state x),
+%                       - MSE_ansatz, and
+%                       - xref (true values of state variables x_{1,t} and
+%                       x_{2,t}
 
 rng(100*sum(clock)+100*iter,'twister')
 
@@ -23,7 +28,7 @@ H = 0.75;               % coupling between slow and fast variables
 C = 10;                 % time scale of variables y
 B = 15;                 % inverse amplitude of the fast variables
 
-h = 5e-3;               % integration period in natural units, antes era 2e-4
+h = 5e-3;               % integration period in natural units
 % t_final = 40;           % duration of the simulation in natural time units
 Tobs = fix(gap/h);      % signals observed every Tobs time steps
 NT = fix(t_final/h);    % no. of discrete time steps
@@ -31,9 +36,9 @@ NT = fix(t_final/h);    % no. of discrete time steps
 fps = 10;               % no. of fast variables per slow variable 
 nosc_fast = fps*nosc;   % no. of fast variables
 
-s2z = 4;                % variance of the observations: slow variables
+s2y = 4;                % variance of the observations: slow variables
 s2x = h/4;              % variance of the signal noise (slow variables)
-s2y = h/16;             % variance of the signal noise (fast variables)
+s2z = h/16;             % variance of the signal noise (fast variables)
 
 K = 2;                  % we observe one every K slow oscillators
 
@@ -56,7 +61,7 @@ fprintf(1,'iteration= %d \n', iter);
 
 t0 = clock;
 
-[FAest, Xest, FAparticles, MSEx, MSE_ansatz, xref] = SMCEKF_L96(s2x,s2y,s2z,h,NT,Tobs,K,FA_range,s2M([1 5]),N,F,C,B,H,fps,nosc); 
+[FAest, Xest, FAparticles, MSEx, MSE_ansatz, xref] = SMCEKF_L96(s2x,s2z,s2y,h,NT,Tobs,K,FA_range,s2M([1 5]),N,F,C,B,H,fps,nosc); 
        
 ttotal = etime(clock,t0)/60;
 
@@ -66,7 +71,7 @@ fprintf(1,'\n ----------------------------------------------------------- \n \n'
 
 % Save data
 Output_SMCEKF = struct('FAest',FAest,'Xest',Xest,'FAparticles',FAparticles,'MSEx',MSEx, 'MSE_ansatz', MSE_ansatz,'xref',xref);  
-etiq_save = sprintf('data/EKF_MC_FA_nosc%d_M%d_Tobs%d_iter%d.mat', nosc, N, Tobs, iter);
+etiq_save = sprintf('data/SMCEKF_FA_nosc%d_N%d_Tobs%d_iter%d.mat', nosc, N, Tobs, iter);
 save(etiq_save);
 
 
