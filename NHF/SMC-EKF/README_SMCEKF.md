@@ -3,4 +3,4 @@ Code for running a nested hybrid filter (NHF) in a two-scale Lorenz 96 model. In
   * A bank of EKFs that estimate the state.
 
 # Run
-The main script is NHF_SMCEKF_Lorenz96.m
+The main script is main_SMCEKF.m
