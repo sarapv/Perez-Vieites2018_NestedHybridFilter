@@ -93,7 +93,7 @@ for t = 1+Tobs:Tobs:NT
             subplot(4,4,kk);
             plot(h*(1:t),x_ref(kk,1:t),'k-');
             hold on;
-            plot(h*(1+Tobs:Tobs:t),xe(kk,1+Tobs:Tobs:t),'g--');
+            plot(h*(1+Tobs:Tobs:t),xest(kk,1+Tobs:Tobs:t),'g--');
             hold off;
             xlabel('time');
             etiq = sprintf('slow var. %d', kk);
@@ -128,7 +128,7 @@ for t = 1+Tobs:Tobs:NT
         axis([0 h*(t+20) par_range(2,1) par_range(2,2)]);
         
         subplot(4,4,16);
-        plot(Ap(1,1:M),Ap(2,1:M),'co');
+        plot(Aparticles(1,1:M),Aparticles(2,1:M),'co');
         hold on;
         plot(A_ref(1),A_ref(2),'kx');
         hold off;

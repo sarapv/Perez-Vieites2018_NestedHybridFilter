@@ -95,7 +95,7 @@ s2M = [20 20 1/5 20 0.04 0.04]./(M^1.5); % [F C B H A1 A2] - jittering variance
      %% Nested BF, unknown F with unknown ansatz
     t0 = clock;
     
-    [FAest, Xest_FA, FApart] = nbf_fast_FA_a(s2x,s2y,h,NT,Tobs,K,y,FA_range,nosc,M,N,s2M([1 5]),x,A);
+    [FAest, Xest_FA, FApart] = NPF_parameterlayer(s2x,s2y,h,NT,Tobs,K,y,FA_range,nosc,M,N,s2M([1 5]),x,A); 
     MSE_FA_slow = sum( sum( (Xest_FA(:,1+Tobs:Tobs:NT) - x(:,1+Tobs:Tobs:NT)).^2 ) ) / sum( sum( x(:,1+Tobs:Tobs:NT).^2 ) );
 
     Output_FA = struct('FAest',FAest,'Xest',Xest_FA,'FApart',FApart,'MSE',MSE_FA_slow);
