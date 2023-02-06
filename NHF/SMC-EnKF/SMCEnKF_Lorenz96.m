@@ -162,7 +162,7 @@ for t = 2:NT
                 plot(h*(1+Tobs:Tobs:t),xest(kk,1+Tobs:Tobs:t),'g--');
                 hold off;
                 xlabel('time');
-                etiq = sprintf('MC slow var. %d', kk);
+                etiq = sprintf('SMC slow var. %d', kk);
                 ylabel(etiq);
             end %kk
             
@@ -189,7 +189,7 @@ for t = 2:NT
             plot(h*(1+Tobs:Tobs:t),Aest(2,1+Tobs:Tobs:t),'g--');
             hold off;
             xlabel('time');
-            %ylabel('ansatz');
+            ylabel('ansatz');
             axis([0 h*(t+20) par_range(2,1) par_range(2,2)]);
 
             subplot(2,4,8);
@@ -201,8 +201,8 @@ for t = 2:NT
             xlabel('a(1)'), ylabel('a(2)');
            
             subplot(2,4,4)
-            plot(h*(1+Tobs:Tobs:t),MSEx(1,1+Tobs:Tobs:t),'b');
-            xlabel('MSE')
+            semilogy(h*(1+Tobs:Tobs:t),MSEx(1,1+Tobs:Tobs:t),'b');
+            xlabel('MSE_x')
             
              
             pause(0.1);

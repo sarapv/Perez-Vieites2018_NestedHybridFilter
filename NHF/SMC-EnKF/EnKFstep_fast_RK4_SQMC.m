@@ -80,23 +80,23 @@ S = ((Zhat*Zhat')/(M_ensemble-1))+R;
 
 
 
-if nosc>100
-    numberofblocks = floor(nosc/10);
-else
-     numberofblocks = 2;
-end
-S_eig = zeros(dim_obs,1);
-S_inv = zeros(dim_obs,dim_obs);
+% if nosc>100
+%     numberofblocks = floor(nosc/10);
+% else
+%      numberofblocks = 2;
+% end
+% S_eig = zeros(dim_obs,1);
+% S_inv = zeros(dim_obs,dim_obs);
+% 
+% for i = 1:numberofblocks
+%     part = ((i-1)*(dim_obs/numberofblocks))+1:i*dim_obs/numberofblocks;
+%     aux = S(part,part);
+%     S_inv(part,part) = inv(aux);
+%     S_eig(part,1)=eig(aux);
+% end
 
-for i = 1:numberofblocks
-    part = ((i-1)*(dim_obs/numberofblocks))+1:i*dim_obs/numberofblocks;
-    aux = S(part,part);
-    S_inv(part,part) = inv(aux);
-    S_eig(part,1)=eig(aux);
-end
-
-% S_inv = inv(S);
-% S_eig = eig(S);
+S_inv = inv(S);
+S_eig = eig(S);
 
 Kalman_Gain = Mmatrix*S_inv;
 innov = y(1:K:nosc)'*ones(1,M_ensemble)-Y;
