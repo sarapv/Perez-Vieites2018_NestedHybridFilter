@@ -52,29 +52,29 @@ for k = 1:Tobs
     % Predictive covariance
     J = compute_jacobian2(xpredictive,A,h);
     
-    % Simplification of matrix calculations by blocks  
-    nblocks = nosc/10; n=nosc/nblocks; 
-    blocksH = nosc/20; nH = nosc/blocksH;
+%     % Simplification of matrix calculations by blocks  
+%     nblocks = nosc/10; n=nosc/nblocks; 
+%     blocksH = nosc/20; nH = nosc/blocksH;
+%     
+%     init = (0:nblocks-1)*nosc/nblocks;
+%     aux = zeros(nosc,nosc);
+%     
+%     % aux = J*P0;
+%     aux(1:n,[1:nH,(blocksH-1)*nH+1:nosc])=J( 1:n ,[1:1+n,nosc-1,nosc])*P0([1:1+n,nosc-1,nosc],[1:nH,(blocksH-1)*nH+1:nosc]);
+%     for i=2:nblocks-1
+%        aux(1+init(i):n+init(i),floor((init(i)-1)/nH)*nH+1:ceil((n+1+init(i))/nH)*nH)=J( 1+init(i):n+init(i) ,init(i)-1:init(i)+1+n)*P0(init(i)-1:init(i)+1+n,floor((init(i)-1)/nH)*nH+1:ceil((n+1+init(i))/nH)*nH);
+%     end
+%     aux(1+init(nblocks):n+init(nblocks),[1:nH,(blocksH-1)*nH+1:nosc])=J( 1+init(nblocks):n+init(nblocks) ,[1,init(nblocks)-1:end])*P0([1,init(nblocks)-1:end],[1:nH,(blocksH-1)*nH+1:nosc]);
+% 
+%     % Pp = aux*J';
+%     Ppredictive(:,1:n) = aux(:,[1:1+n,nosc-1,nosc])*J( 1:n ,[1:1+n,nosc-1,nosc])';
+%     for i=2:nblocks-1
+%        Ppredictive(:,1+init(i):n+init(i)) = aux(:,init(i)-1:init(i)+1+n)*J( 1+init(i):n+init(i) ,init(i)-1:init(i)+1+n)';
+%     end
+%     Ppredictive(:,1+init(nblocks):n+init(nblocks)) = aux(:,[1,init(nblocks)-1:end])*J( 1+init(nblocks):n+init(nblocks) ,[1,init(nblocks)-1:end])';
+%     Ppredictive = Ppredictive + s2x*eye(nosc);
     
-    init = (0:nblocks-1)*nosc/nblocks;
-    aux = zeros(nosc,nosc);
-    
-    % aux = J*P0;
-    aux(1:n,[1:nH,(blocksH-1)*nH+1:nosc])=J( 1:n ,[1:1+n,nosc-1,nosc])*P0([1:1+n,nosc-1,nosc],[1:nH,(blocksH-1)*nH+1:nosc]);
-    for i=2:nblocks-1
-       aux(1+init(i):n+init(i),floor((init(i)-1)/nH)*nH+1:ceil((n+1+init(i))/nH)*nH)=J( 1+init(i):n+init(i) ,init(i)-1:init(i)+1+n)*P0(init(i)-1:init(i)+1+n,floor((init(i)-1)/nH)*nH+1:ceil((n+1+init(i))/nH)*nH);
-    end
-    aux(1+init(nblocks):n+init(nblocks),[1:nH,(blocksH-1)*nH+1:nosc])=J( 1+init(nblocks):n+init(nblocks) ,[1,init(nblocks)-1:end])*P0([1,init(nblocks)-1:end],[1:nH,(blocksH-1)*nH+1:nosc]);
-
-    % Pp = aux*J';
-    Ppredictive(:,1:n) = aux(:,[1:1+n,nosc-1,nosc])*J( 1:n ,[1:1+n,nosc-1,nosc])';
-    for i=2:nblocks-1
-       Ppredictive(:,1+init(i):n+init(i)) = aux(:,init(i)-1:init(i)+1+n)*J( 1+init(i):n+init(i) ,init(i)-1:init(i)+1+n)';
-    end
-    Ppredictive(:,1+init(nblocks):n+init(nblocks)) = aux(:,[1,init(nblocks)-1:end])*J( 1+init(nblocks):n+init(nblocks) ,[1,init(nblocks)-1:end])';
-    Ppredictive = Ppredictive + s2x*eye(nosc);
-    
-%     Ppredictive = J*P0*J' + s2x*eye(nosc);
+    Ppredictive = J*P0*J' + s2x*eye(nosc);
 
     % For the next step
     x0 = xpredictive;
