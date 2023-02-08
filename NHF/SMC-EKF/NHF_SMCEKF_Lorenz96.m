@@ -66,7 +66,7 @@ t0 = clock;
 ttotal = etime(clock,t0)/60;
 
 fprintf(1, 'time to finish = %7.3f min\n',ttotal);       
-fprintf(1,'SMC-EKF (F unk., ansatz): MSE = %7.3f \n', mean(MSEx(1+Tobs:Tobs:NT)));
+fprintf(1,'SMC-EKF (F unk., ansatz): MSEx = %7.3f \n', mean(MSEx(1+Tobs:Tobs:NT)));
 fprintf(1,'\n ----------------------------------------------------------- \n \n');
 
 % Save data
