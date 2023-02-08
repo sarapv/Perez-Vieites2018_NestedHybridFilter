@@ -175,7 +175,7 @@ for t = 2:NT
                 plot(h*(1+Tobs:Tobs:t),xest(kk,1+Tobs:Tobs:t),'g--');
                 hold off;
                 xlabel('time');
-                etiq = sprintf('MC slow var. %d', kk);
+                etiq = sprintf('slow var. %d', kk);
                 ylabel(etiq);
             end %kk
             
@@ -215,7 +215,7 @@ for t = 2:NT
             
             subplot(2,4,4)
             semilogy(h*(1+Tobs:Tobs:t),MSEx(1,1+Tobs:Tobs:t),'b');
-            xlabel('MSE_x')
+            ylabel('MSE_x')
             
             pause(0.1);
             
