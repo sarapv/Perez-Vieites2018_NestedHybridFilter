@@ -1,4 +1,4 @@
-function [MSE, Aest, Fest, Xest, x_ref] = SF_RK4(s2x,s2z,s2y,h,NT,Tobs,K,par_range,N,M,F,C,B,H,nosc,fps,s2M)
+function [MSEx, Aest, Fest, Xest, x_ref] = SF_RK4(s2x,s2z,s2y,h,NT,Tobs,K,par_range,N,M,F,C,B,H,nosc,fps,s2M)
 %
 % function [MSE, A_estim, F_estim, X_estim, x_ref] = SF_RK4(s2x,s2z,s2y,h,NT,Tobs,K,par_range,N,M,F,C,B,H,nosc,fps,s2M)
 %
@@ -51,7 +51,7 @@ Aest = zeros(2,NT);
 
 Xensemble = randn(nosc,M); 
 Xest_aux = randn(nosc,1);
-MSE = zeros(1,NT);
+MSEx = zeros(1,NT);
 
 %% Prior sampling in the parameter space (uniform prior)
 Fparticles = par_range(1,1) + ( par_range(1,2) - par_range(1,1) ).*rand(1,N);
@@ -218,7 +218,7 @@ for t = 2:NT
         
         % Estimates and MSE
         Xest(:,t) = Xest_aux;
-        MSE(t) = real(sum((Xest_aux-x).^2)/nosc); 
+        MSEx(t) = real(sum((Xest_aux-x).^2)/nosc); 
       
         
         % Figures
@@ -226,7 +226,7 @@ for t = 2:NT
             
             figure(3);
             for k = 1:2
-                subplot(4,2,k);
+                subplot(2,4,k);
                 plot(h*(1:t),x_ref(k,1:t),'k-');
                 hold on;
                 plot(h*(1+Tobs:Tobs:t),Xest(k,1+Tobs:Tobs:t),'g--');
@@ -236,7 +236,7 @@ for t = 2:NT
                 ylabel(etiq);
             end %kk
             
-            subplot(4,2,3);
+            subplot(2,4,5);
             plot(h*(1:t),F*ones([1 t]),'k-');
             hold on;
             plot(h*(1+Tobs:Tobs:t),Fest(1+Tobs:Tobs:t),'g-');
@@ -245,7 +245,7 @@ for t = 2:NT
             xlabel('time');
             ylabel('F');
 
-            subplot(4,2,4);
+            subplot(2,4,7);
             %plot(h*(1:t),A_ref(1)*ones([1 t]),'k-');
             %plot(h*(1:t),A_ref(2)*ones([1 t]),'k--');
             plot(h*(1+Tobs:Tobs:t),Aest(1,1+Tobs:Tobs:t),'g-');
@@ -256,7 +256,7 @@ for t = 2:NT
             %ylabel('ansatz');
             axis([0 h*(t+20) par_range(2,1) par_range(2,2)]);
 
-            subplot(4,2,5);
+            subplot(2,4,8);
             plot(Aparticles_old(1,:),Aparticles_old(2,:),'co');
 %             hold on;
 %             plot(A_ref(1),A_ref(2),'kx');
@@ -264,14 +264,14 @@ for t = 2:NT
             axis([par_range(2,1) par_range(2,2) par_range(2,1) par_range(2,2)]);
             xlabel('a(1)'), ylabel('a(2)')
              
-            subplot(4,2,6);
+            subplot(2,4,6);
             semilogy(Fparticles_old,w,'bs')
             ylabel('n.n. weights'), xlabel('F')
             axis([par_range(1,1) par_range(1,2) 1e-4 1]);
             
-            subplot(4,2,7)
-            plot(h*(1+Tobs:Tobs:t),MSE(1,1+Tobs:Tobs:t),'b');   
-            xlabel('MSE')
+            subplot(2,4,4)
+            semilogy(h*(1+Tobs:Tobs:t),MSEx(1,1+Tobs:Tobs:t),'b');   
+            ylabel('MSE_x')
                    
             pause(0.1);
         end %if rem        

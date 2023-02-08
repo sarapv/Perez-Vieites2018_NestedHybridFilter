@@ -6,7 +6,7 @@ M = 500;        % no. particles of second layer
 K = 2;          % we observe one every K slow oscillators, e.g., [x_1, x_3, ..., x_9]
 t_final = 10;   % duration of the simulation in natural time units
 
-total_iterations = 1:10;
+total_iterations = 1; %1:10;
 
 %% Run
 
