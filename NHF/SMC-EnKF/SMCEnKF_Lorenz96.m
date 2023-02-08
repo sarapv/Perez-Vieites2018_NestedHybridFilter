@@ -114,7 +114,7 @@ for t = 2:NT
         for n = 1:N %cambiar a parfor
             % One EnKF step. It returns the log-weight (non normalised), the new
             % covariance matrix and the new mean vector in the state space
-            [Xaux, xmean, llw_aux, psi] = EnKFstep_fast_RK4_SQMC(Fparticles(n),Aparticles(:,n),s2x,s2y,h,Tobs,K,y,Xensemble{n},just_noise);                       
+            [Xaux, xmean, llw_aux, psi] = EnKFstep_fast_L96_SQMC(Fparticles(n),Aparticles(:,n),s2x,s2y,h,Tobs,K,y,Xensemble{n},just_noise);                       
             Xensemble{n}=Xaux;
             Xparticles_layer1(:,n)=xmean;
             llw(n)=llw_aux;
@@ -162,7 +162,7 @@ for t = 2:NT
                 plot(h*(1+Tobs:Tobs:t),xest(kk,1+Tobs:Tobs:t),'g--');
                 hold off;
                 xlabel('time');
-                etiq = sprintf('SMC slow var. %d', kk);
+                etiq = sprintf('MC slow var. %d', kk);
                 ylabel(etiq);
             end %kk
             
@@ -189,7 +189,7 @@ for t = 2:NT
             plot(h*(1+Tobs:Tobs:t),Aest(2,1+Tobs:Tobs:t),'g--');
             hold off;
             xlabel('time');
-            ylabel('ansatz');
+            %ylabel('ansatz');
             axis([0 h*(t+20) par_range(2,1) par_range(2,2)]);
 
             subplot(2,4,8);
@@ -201,8 +201,8 @@ for t = 2:NT
             xlabel('a(1)'), ylabel('a(2)');
            
             subplot(2,4,4)
-            semilogy(h*(1+Tobs:Tobs:t),MSEx(1,1+Tobs:Tobs:t),'b');
-            xlabel('MSE_x')
+            plot(h*(1+Tobs:Tobs:t),MSEx(1,1+Tobs:Tobs:t),'b');
+            xlabel('MSE')
             
              
             pause(0.1);
