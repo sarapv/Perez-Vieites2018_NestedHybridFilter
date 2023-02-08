@@ -236,7 +236,7 @@ for t = 2:NT
                 plot(h*(1+Tobs:Tobs:t),xest_sqmc(kk,1+Tobs:Tobs:t),'g--');
                 hold off;
                 xlabel('time');
-                etiq = sprintf('SQMC slow var. %d', kk);
+                etiq = sprintf('slow var. %d', kk);
                 ylabel(etiq);
             end %kk
 
@@ -279,7 +279,7 @@ for t = 2:NT
              
             subplot(2,4,4)
             semilogy(h*(1+Tobs:Tobs:t),MSEx_sqmc(1,1+Tobs:Tobs:t),'r');
-            xlabel('MSE_x')
+            ylabel('MSE_x')
              
             pause(0.1);
         end %if rem
