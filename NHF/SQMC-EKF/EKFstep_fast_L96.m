@@ -1,9 +1,9 @@
-function [Pupdated, Xupdated, lW, PSIstep] = EKFstep_fast_L96(F,A,s2x,s2y,h,Tobs,K,y,P0,x0)
+function [Pupdated, Xupdated, llk, PSIstep] = EKFstep_fast_L96(F,A,s2x,s2y,h,Tobs,K,y,P0,x0)
 %
 % Inputs
 % F, A      : F parameter, and coefficients A(1) and A(2)
 % s2x   : process noise variances for the slow variables
-% s2y   : observation noise variance
+% s2z   : observation noise variance
 % h     : Euler integration step
 % Tobs  : observations are collected every Tobs time steps
 % K     : one out every K slow oscillators is observed 
@@ -14,7 +14,7 @@ function [Pupdated, Xupdated, lW, PSIstep] = EKFstep_fast_L96(F,A,s2x,s2y,h,Tobs
 % Outputs
 % Pupdated    : updated covariance matrix
 % Xupdated    : updated mean
-% lW          : log likelihood
+% llk          : log likelihood
 % PSIstep     : ansatz
 %
 
@@ -113,11 +113,11 @@ try
     Pupdated = (eye(nosc) - Kalman_Gain*Hy)*Ppredictive;
 
     % Likelihood
-    lW = -0.5 * ( sum(log(S_eig)) + innov' * S_inv * innov );
+    llk = -0.5 * ( sum(log(S_eig)) + innov' * S_inv * innov );
 
 catch
     % when errors in computing inv(S) or eig(S)
-    lW = -1e5;
+    llk = -1e5;
     Xupdated = xpredictive;
     Pupdated = Ppredictive;
     
