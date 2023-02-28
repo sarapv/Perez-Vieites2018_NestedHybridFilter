@@ -1,4 +1,4 @@
-# Nested hybrid filters (NHFs)
+# Pérez-Vieites2018 - Nested hybrid filters (NHFs)
 
 In this repository is included MATLAB code of the NHFs introduced in [[2]](#references). Other algorithms, which have been compared to NHFs in this paper, are also included:
 
