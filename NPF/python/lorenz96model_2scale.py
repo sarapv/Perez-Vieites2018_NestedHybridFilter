@@ -84,17 +84,17 @@ def euler_lorenz96_1timestep(x_old, z_old, dx, dz, fps, h, param, noise_var):
 
 def lorenz96_2scale(dx, fps, h, t_final, integration_method):
     """
-    Simulates a Lorenz96 model :param integration_method: "euler" or "runge-kutta4" are available to integrate the
-    SDEs of Lorenz96 :param dx: dimension of the state x, e.g., dx = 20 :param fps: number of fast variables per each
-    slow variables x (i.e., dimension of z = fps * dx), e.g., fps = 10 :param h: step-size for the integration of the
-    SDEs (in natural units), e.g., h = 2e-4 :param t_final: length of the simulation in natural time units (i.e.,
+    Simulates a Lorenz96 model :true_param integration_method: "euler" or "runge-kutta4" are available to integrate the
+    SDEs of Lorenz96 :true_param dx: dimension of the state x, e.g., dx = 20 :true_param fps: number of fast variables per each
+    slow variables x (i.e., dimension of z = fps * dx), e.g., fps = 10 :true_param h: step-size for the integration of the
+    SDEs (in natural units), e.g., h = 2e-4 :true_param t_final: length of the simulation in natural time units (i.e.,
     t_final/h discrete time steps), e.g., t_final = 10
 
     :return: x: slow state variables from t = 0, ... , T
     :return: y: (partial) observations of the slow state variables from t = 0, ... , T
     :return: z: fast state variables from t = 0, ... , T
     :return: u: (partial) observations of the fast state variables from t = 0, ... , T
-    :return: param: contains the parameters of the Lorenz96 model
+    :return: true_param: contains the parameters of the Lorenz96 model
     """
 
     # Dimension of fast variables

@@ -3,15 +3,17 @@ import matplotlib.pyplot as plt
 from lorenz96model_2scale import lorenz96_2scale
 
 # Ground truth of the model : stochastic Lorenz 96 model
+# dimension of the model
+dx = 20         # dimension of slow variables (x)
+fps = 10        # no. of fast variables (z) per slow variables (x)
 
+# time variables
+h = 2e-4        # integration period in natural units
+t_final = 10    # duration of the simulation in natural time units
+t_obs = 200     # states are observed every t_obs time steps
 
-dx = 20
-fps = 10
-h = 2e-4
-t_final = 10
-t_obs = 200
-
-x, z, y, u, param, noise_var, T = lorenz96_2scale(dx, fps, h, t_final, integration_method="runge-kutta4")
+# generating ground truth, observations, as well as obtaining true parameters
+x, z, y, u, true_param, noise_var, T = lorenz96_2scale(dx, fps, h, t_final, integration_method="runge-kutta4")
 
 # Figures
 plt.figure(1)
