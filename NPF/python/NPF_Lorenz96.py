@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from lorenz96model_2scale import lorenz96_2scale
 
+
+
 # Ground truth of the model : stochastic Lorenz 96 model
 # dimension of the model
 dx = 20         # dimension of slow variables (x)
@@ -14,6 +16,9 @@ t_obs = 200     # states are observed every t_obs time steps
 
 # generating ground truth, observations, as well as obtaining true parameters
 x, z, y, u, true_param, noise_var, T = lorenz96_2scale(dx, fps, h, t_final, integration_method="runge-kutta4")
+
+# TODO: least squares estimates of the contribution of z in x
+
 
 # Figures
 plt.figure(1)
@@ -38,4 +43,13 @@ for i, idx in enumerate(idx_plotted_z):
 plt.suptitle('Fast state and observations')
 plt.show()
 
-# Call the NPF : probably we could show the whole algorithm in a high level way (with small functions everywhere)
+
+# TODO: initialize algorithm parameters, i.e., number of particles per layer, jittering variance, range of parameters
+
+# TODO: create function NPF(x,y,N,M,K,h,T,range,jittering,param)
+# TODO: initialize priors for parameters and states
+# TODO: declare variables to save stuff
+
+# TODO: for loop with (1) jittering param, (2) for loop in M for state estimation, (3) weights, (4) estimates, (5) resampling
+# TODO: function for state estimation: (1) prediction (model calling inside), (2) likelihood, (3) weights, (4) estimates, (5) resampling
+
