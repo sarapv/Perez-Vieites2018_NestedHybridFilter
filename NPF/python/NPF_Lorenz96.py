@@ -50,6 +50,16 @@ plt.show()
 # TODO: initialize priors for parameters and states
 # TODO: declare variables to save stuff
 
-# TODO: for loop with (1) jittering param, (2) for loop in M for state estimation, (3) weights, (4) estimates, (5) resampling
-# TODO: function for state estimation: (1) prediction (model calling inside), (2) likelihood, (3) weights, (4) estimates, (5) resampling
-
+# TODO: for loop with
+#       (1) jittering param,
+#       (2) for loop in M for state estimation,
+#       (3) weights,
+#       (4) estimates,
+#       (5) resampling
+#
+#  TODO: function for state estimation:
+#       (1) prediction (model calling inside),
+#       (2) likelihood,
+#       (3) weights,
+#       (4) estimates,
+#       (5) resampling
